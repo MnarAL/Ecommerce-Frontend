@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import ProductsList from "./ProductsList";
+import React from 'react'
 
-const ProductCard = ({ title, price}) => {
+import { useNavigate } from "react-router-dom";
 
- 
+const ProductCard = ({product}) => {
+   const navigate = useNavigate();
 
+   const handleDetailsClick = () => {
+     navigate(`/productdetails/${product.id}`);
+   };
   return (
     <div>
-      <h2>Title: {title}</h2>
-      <h3>Price: ${price}</h3>
-      
-      {/* <ProductsList title={products.title} />
-      <ProductsList price={products.price} /> */}
+      <li key={product.id}>
+        <img src={product.imageUrl} alt="pro" />
+        <h3>{product.name}</h3>
+        <p>Prics: {product.price} SAR</p>
+        <button onClick={handleDetailsClick}>more deatils</button>
+      </li>
     </div>
   );
-};
+}
 
-
-
-
-
-export default ProductCard ;
+export default ProductCard
