@@ -1,9 +1,8 @@
 // HomePage.js
 
-import React, { useContext } from "react"; 
-import { ProductContext } from "../contexts/ProductContexts"; 
-import ProductList from "../components/products/ProductsList"; 
-import Pagination from "../components/Pagination";
+import React, { useContext } from "react";
+import { ProductContext } from "../contexts/ProductContexts";
+import ProductList from "../components/products/ProductsList";
 
 
 const HomePage = () => {
@@ -19,9 +18,7 @@ const HomePage = () => {
 
   return (
     <>
-    {/* <Pagination/> */}
       <ProductList />
-      
     </>
   );
 };

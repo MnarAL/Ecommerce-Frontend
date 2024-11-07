@@ -4,20 +4,18 @@ import ProductCard from "./ProductCard";
 import { ProductContext } from "../../contexts/ProductContexts";
 import Search from "../Search";
 import Sort from "../sort";
-import Pagination from "../Pagination";
+import Pagination from "../PaginationComp";
 
 const ProductsList = () => {
-  const { products } = useContext(ProductContext); 
+  const { products } = useContext(ProductContext);
   const [filterProducts, setFilterProducts] = useState(products);
 
   const handleSearch = (searchTerm) => {
-
     const filtered = products.filter((product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    setFilterProducts(filtered); 
+    setFilterProducts(filtered);
   };
-
 
   useEffect(() => {
     setFilterProducts(products);
@@ -25,8 +23,8 @@ const ProductsList = () => {
 
   return (
     <div>
-      <Pagination/>
-      <Sort/>
+      <Pagination />
+      <Sort />
       <Search onHandleSearch={handleSearch} />
       <div>
         <h2>Products List</h2>
@@ -37,7 +35,7 @@ const ProductsList = () => {
             <ProductCard key={product.id} product={product} />
           ))
         ) : (
-          <p>No products found</p> 
+          <p>No products found</p>
         )}
       </ul>
     </div>
