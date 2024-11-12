@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
-
 import ProductCard from "./ProductCard";
 import { ProductContext } from "../../contexts/ProductContexts";
 import Search from "../Search";
-import Sort from "../sort";
-import Pagination from "../PaginationComp";
+import Sort from "../Sort";
+import PaginationComp from "../PaginationComp";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const ProductsList = () => {
   const { products } = useContext(ProductContext);
@@ -22,23 +25,40 @@ const ProductsList = () => {
   }, [products]);
 
   return (
-    <div>
-      <Pagination />
-      <Sort />
-      <Search onHandleSearch={handleSearch} />
-      <div>
-        <h2>Products List</h2>
-      </div>
-      <ul>
+    <Container>
+      <Box mb={3}>
+        <Typography variant="h4" component="h2" gutterBottom>
+          Products List
+        </Typography>
+      </Box>
+
+      <Box display="flex" gap={2} mb={3}>
+        <Sort />
+        <Search onHandleSearch={handleSearch} />
+      </Box>
+
+      <Grid container spacing={4}>
         {filterProducts.length > 0 ? (
           filterProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <Grid item xs={12} sm={6} md={4} lg={3} key={product.id}>
+              <Box>
+                <ProductCard product={product} />
+              </Box>
+            </Grid>
           ))
         ) : (
-          <p>No products found</p>
+          <Grid item xs={12}>
+            <Typography variant="body1" color="textSecondary">
+              No products found
+            </Typography>
+          </Grid>
         )}
-      </ul>
-    </div>
+      </Grid>
+
+      <Box mt={4} display="flex" justifyContent="center">
+        <PaginationComp />
+      </Box>
+    </Container>
   );
 };
 

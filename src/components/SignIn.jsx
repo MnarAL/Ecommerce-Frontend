@@ -33,10 +33,20 @@ const SignIn = () => {
     if (validateInput()){
       console.log("Valid Input")
       try {
-    const response = await login(user);
-    if (response.ok) {
+    const data = await login(user);
+    console.log(data);
+    
+    
+     localStorage.setItem("token", data.token || "null");
+     localStorage.setItem("name", data.userName || "null");
+     localStorage.setItem("id", data.userId || "null");
+      localStorage.setItem("admin", data.admin || false);
+      localStorage.setItem("login", true );
+     
+    if (data) {
+     
       console.log("Successfully signed in");
-      navigate("/productList", { state: response.user }); //May be I change the comp..to profile or home
+      navigate("/productList", { state: data.user }); //May be I change the comp..to profile or home
     } else {
       setErrors({ form: "Invalid email or password" });
     }

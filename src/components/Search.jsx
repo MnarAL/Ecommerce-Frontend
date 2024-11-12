@@ -1,27 +1,29 @@
-import React, { useContext, useState } from "react";
-
+import React, { useContext } from "react";
 import { ProductContext } from "../contexts/ProductContexts";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 const Search = ({ onHandleSearch }) => {
-   const { searchTerm, setSearchTerm } = useContext(ProductContext);
-  // const [searchValue, setSearchValue] = useState("");
+  const { searchTerm, setSearchTerm } = useContext(ProductContext);
 
-  const handleSearchChange = (event) =>  {
+  const handleSearchChange = (event) => {
     const { value } = event.target;
-    setSearchTerm(value); 
-    onHandleSearch(value); 
+    setSearchTerm(value);
+    onHandleSearch(value);
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search products..."
+    <Box sx={{ width: "100%" }}>
+      <TextField
+        fullWidth
+        variant="outlined"
+        label="Search products..."
         value={searchTerm}
         onChange={handleSearchChange}
+        sx={{ mb: 2 }}
       />
-    </div>
+    </Box>
   );
 };
 
-export default Search
+export default Search;

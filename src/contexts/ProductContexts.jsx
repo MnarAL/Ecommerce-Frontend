@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
-import { getAllProducts } from "../Services/productService";
+import { getAllProducts } from "../Services/ProductService";
+import { handleAddProduct , handleDeleteProduct , handleEditProduct } from "../Services/ProductService";
+// import { getAllProducts } from "../Services/productService";
 
 export const ProductContext = createContext();
 
@@ -39,6 +41,47 @@ export const ProductProvider = ({ children }) => {
     fetchProducts();
   }, [sortCriteria, sortOrder, pageNumber, pageSize]); // setOrder + setCriteria remove
 
+    const addProduct = async (newProduct) => {
+      try {
+        const addedProduct = await handleAddProduct(newProduct);
+         if (addedProduct) {
+          setProducts([...products, newProduct]);
+         }
+        
+      } catch (error) {
+        console.error("Failed to add product:", error);
+      }
+    };
+const deleteProduct = async (id) => {
+  try {
+    const success = await handleDeleteProduct(id);
+    if (success) {
+      setProducts(products.filter((product) => product.id !== id));
+    }
+  } catch (error) {
+    console.error("Failed to delete product:", error);
+  }
+};
+
+const editProduct = async (updatedProduct) => {
+    try {
+      const updatedProductData = await handleEditProduct(
+        updatedProduct.id,
+        updatedProduct
+      );
+       if (updatedData) {
+      setProducts(
+        products.map((product) =>
+          product.id === updatedProductData.id ? updatedProductData : product
+        )
+      );}
+    }
+     catch (error) {
+      console.error("Failed to update product:", error);
+    }
+  }
+
+
   return (
     <ProductContext.Provider
       value={{
@@ -57,9 +100,13 @@ export const ProductProvider = ({ children }) => {
         pageSize,
         setPageSize,
         totalPages,
+        addProduct,
+        deleteProduct,
+        editProduct,
       }}
     >
       {children}
     </ProductContext.Provider>
   );
 };
+

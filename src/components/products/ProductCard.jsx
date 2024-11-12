@@ -15,6 +15,10 @@ const ProductCard = ({product}) => {
         <h3>{product.name}</h3>
         <p>Prics: {product.price} SAR</p>
         <button onClick={handleDetailsClick}>more deatils</button>
+        {/* <button onClick={() => onAddToCart(product)}>
+        
+        </button>{" "}
+    ة */}
       </li>
     </div>
   );

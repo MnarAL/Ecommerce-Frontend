@@ -9,9 +9,9 @@ export const login = async (user) => {
         body: JSON.stringify(user),
       }
     );
-    return response;
-    // const data = await response.json();
-    // return data;
+    // return response;
+    const data = await response.json();
+    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -26,7 +26,9 @@ export const register = async (user) => {
     // http://localhost:5125/api/v1/auth/register
     const response = await fetch(`http://localhost:5125/api/v1/auth/register`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json"
+       },
       body: JSON.stringify(user),
     });
     return response;

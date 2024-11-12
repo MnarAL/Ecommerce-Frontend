@@ -34,3 +34,81 @@ export const getAllProductsById = async (id) => {
     throw error;
   }
 };
+
+export const handleAddProduct = async (product) => {
+  try {
+    const response = await fetch("http://localhost:5125/api/v1/products", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    });
+    // return response;
+
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(`Server error: ${errorMessage}`);
+    }
+    const addedProduct = await response.json();
+    console.log("Parsed response from backend:", addedProduct);
+    return addedProduct;
+  } catch (error) {
+    console.error("Error adding product:", error);
+  }
+};
+
+//   const data = await response.json();
+//   return data;
+// } catch (error) {
+//   console.error("Error adding product:", error);
+//   throw error;
+// }
+// };
+
+export const handleDeleteProduct = async (id) => {
+  try {
+    const response = await fetch(
+      `https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/products/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to delete product");
+    }
+
+    console.log("Product deleted successfully");
+    return true;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
+  }
+};
+
+// ProductsService.js
+
+export const handleEditProduct = async (id, updatedProduct) => {
+  try {
+    const response = await fetch(
+      `http://localhost:5125/api/v1/products/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedProduct),
+      }
+    );
+
+    if (response.ok) {
+      const updatedProductData = await response.json();
+      return updatedProductData;
+    } else {
+      throw new Error("Failed to update product");
+    }
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
+  }
+};
