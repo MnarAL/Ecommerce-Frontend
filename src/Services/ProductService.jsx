@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // const baseUrl = "https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/products" ?pageNumber=${pageNumber}&pageSize=${pageSize}
 
 export const getAllProducts = async (
@@ -37,28 +39,22 @@ export const getAllProductsById = async (id) => {
 
 export const handleAddProduct = async (product) => {
   try {
-    const response = await fetch("http://localhost:5125/api/v1/products", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    });
-    // return response;
+    const response = await axios.post(
+      "http://localhost:5125/api/v1/products",
+      product
+    );
+    console.log(response);
+    // if (!response.ok) {
+    //   const errorMessage = await response.text();
+    //   throw new Error(`Server error: ${errorMessage}`);
+    // }
 
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`Server error: ${errorMessage}`);
-    }
-    const addedProduct = await response.json();
-    console.log("Parsed response from backend:", addedProduct);
-    return addedProduct;
+    return response;
   } catch (error) {
     console.error("Error adding product:", error);
   }
 };
 
-//   const data = await response.json();
 //   return data;
 // } catch (error) {
 //   console.error("Error adding product:", error);
@@ -105,6 +101,7 @@ export const handleEditProduct = async (id, updatedProduct) => {
       const updatedProductData = await response.json();
       return updatedProductData;
     } else {
+      console.log(updatedProduct);
       throw new Error("Failed to update product");
     }
   } catch (error) {

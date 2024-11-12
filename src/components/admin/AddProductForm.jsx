@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleAddProduct } from "../../Services/ProductService";
+import { ProductContext } from "../../contexts/ProductContexts";
 // import { handleAddProduct } from "../Services/ProductService";
 
 const AddProductForm = () => {
   const [errors, setErrors] = useState({});
+  const { addProduct } = useContext(ProductContext);
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: "",
-    price: "",
+    price: 0,
     categoryId: "",
     imageUrl: "",
   });
-
-  console.log("product ", product);
 
   const handleImageChange = (event) => {
     const imageUrl = event.target.value;
@@ -31,9 +31,6 @@ const AddProductForm = () => {
     }));
   };
 
-  const addProduct = (newProduct) => {
-    setProduct((prevProducts) => [...prevProducts, newProduct]);
-  };
 
   const validateInputs = () => {
     const newErrors = {};
@@ -64,24 +61,22 @@ const AddProductForm = () => {
     }
 
     try {
-      const addedProduct = await handleAddProduct({
+      const productData = {
         name: product.name,
         price: parseFloat(product.price),
         categoryId: product.categoryId,
         imageUrl: product.imageUrl,
-      });
+      };
 
-      if (addedProduct) {
-        setProduct({
-          vame: "",
-          price: "",
-          categoryId: "",
-          imageUrl: "",
-        });
-        addProduct(addedProduct);
-
-        navigate(`/admin/dashboard/admin-productslist`);
-      }
+      // if (response) {
+      //   setProduct({
+      //     vame: "",
+      //     price: "",
+      //     categoryId: "",
+      //     imageUrl: "",
+      //   });
+      const response = await addProduct(productData);
+      navigate(`/admin/dashboard/admin-productslist`);
     } catch (error) {
       console.error("Error adding product:", error);
     }

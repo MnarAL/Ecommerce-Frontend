@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // import { handleDeleteProduct } from "../../Services/productService";
 import { ProductContext } from "../../contexts/ProductContexts";
 
@@ -9,15 +9,15 @@ const ProductCardAdmin = ({ product, onDelete, onUpdate }) => {
   // const { products } = useContext(ProductContext);
   const navigate = useNavigate();
 
-    const handleUpdateClick = () => {
-      navigate(`/admin/dashboard/editproduct/${product.id}`);
+    const handleUpdateClick = (productId) => {
+      navigate(`/admin/dashboard/editproduct/${productId}`);
     };
 
-
+ const { id } = useParams();
   
 
   const handleDeleteClick = () => {
-    onDelete(product.id);
+    onDelete(id);
   };
 
   return (

@@ -79,7 +79,7 @@ const Router = () => {
             },
             {
               path: "editproduct/:id",
-              element: <UpdateProduct />,
+              element:<UpdateProduct />,
             },
           ],
         },

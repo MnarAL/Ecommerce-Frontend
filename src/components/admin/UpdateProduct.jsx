@@ -2,27 +2,25 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { ProductContext } from "../../contexts/ProductContexts";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { handleEditProduct } from "../../Services/ProductService";
+
 
 const UpdateProduct = () => {
-  const { products, editProduct } = useContext(ProductContext);
+  const { products, fetchProducts } =
+    useContext(ProductContext);
   const [updatedProduct, setUpdatedProduct] = useState({
     name: "",
-    price: "",
+    price: 0,
   });
-   const { id } = useParams();
-   const navigate = useNavigate();
+  const { id } = useParams();
 
 
-    useEffect(() => {
-      const UpdateProduct = products.find(
-        (product) => product.id === parseInt(id)
-      );
-      if (UpdateProduct) {
-        setUpdatedProduct(UpdateProduct);
-      }
-    }, [id, products]);
-
+  useEffect(() => {
+    const FindProduct = products.find((product) => product.id === id);
+    if (FindProduct) {
+      setUpdatedProduct(FindProduct);
+    }
+  }, [id, products]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,20 +32,24 @@ const UpdateProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-     try {
-       await editProduct(updatedProduct); 
-       console.log("Product updated successfully");
-       navigate(`admin-productslist`);
-     } catch (error) {
-       console.error("Error updating product:", error);
-       
-     }
+    try {
+      await handleEditProduct(id , updatedProduct);
+      await fetchProducts();
+      // console.log("Product updated successfully");
+    //  navigate(`/admin/dashboard/admin-productslist`);
+    } catch (error) {
+      console.error("Error updating product:", error);
+    } }
 
+    // const handleEditClick = (productId) =>
+    //    {
+    //      navigate(`/admin/dashboard/admin-productslist`);
+    //    }
 
-  return (
-    <div>
-      <h2>Update Product</h2>
-      <form onSubmit={handleSubmit}>
+    return (
+      <div>
+        <h2>Update Product</h2>
+        <form onSubmit={handleSubmit}>
         <div>
           <label>Product Name:</label>
           <input
@@ -72,10 +74,9 @@ const UpdateProduct = () => {
 
         <button type="submit">Update</button>
       </form>
+      </div>
+    );
 
-      
-    </div>
-  ); 
-};}
+};
 
-export default UpdateProduct
+export default UpdateProduct;

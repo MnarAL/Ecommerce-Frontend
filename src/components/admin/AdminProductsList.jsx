@@ -12,7 +12,7 @@ import AddProductForm from './AddProductForm';
 // import { handleDeleteProduct } from "../../Services/productService";
 
 const AdminProductsList = () => {
-   const { addProduct, deleteProduct , editProduct } = useContext(ProductContext);
+   const { deleteProduct , editProduct } = useContext(ProductContext);
   const { products, setProducts } = useContext(ProductContext);
   const [filterProducts, setFilterProducts] = useState(products);
   const navigate = useNavigate();
@@ -36,9 +36,7 @@ const AdminProductsList = () => {
 
   return (
     <div>
-      <AddProductForm onAdd={addProduct} />
-      <button onClick={() => navigate(`admin/dashboard/add-product`)}>
-        {" "}
+      <button onClick={() => navigate(`/admin/dashboard/add-product`)}>
         Add Product
       </button>
       <PaginationComp />

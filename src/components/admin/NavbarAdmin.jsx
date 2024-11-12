@@ -14,7 +14,7 @@ const NavbarAdmin = () => {
           <Link to="/">Home</Link>
           <Link to="/admin/dashboard/add-product">Add Product</Link>
           <Link to="/admin/dashboard/admin-productslist">Products List</Link>
-          <Link to="/admin/dashboard/editproduct/:id">   edit </Link>
+          {/* <Link to="/admin/dashboard/editproduct/:id">   edit </Link> */}
         </nav>
       </header>
     </div>
