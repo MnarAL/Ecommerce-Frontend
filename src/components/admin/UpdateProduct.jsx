@@ -11,6 +11,8 @@ const UpdateProduct = () => {
   const [updatedProduct, setUpdatedProduct] = useState({
     name: "",
     price: 0,
+    imageUrl: "",
+    description: "",
   });
   const { id } = useParams();
 
@@ -27,6 +29,14 @@ const UpdateProduct = () => {
     setUpdatedProduct((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleImageChange = (event) => {
+    const imageUrl = event.target.value;
+    setProduct((prevProduct) => ({
+      ...prevProduct,
+      imageUrl,
     }));
   };
 
@@ -48,32 +58,48 @@ const UpdateProduct = () => {
 
     return (
       <div>
+        imageUrl: "", description: "",
         <h2>Update Product</h2>
         <form onSubmit={handleSubmit}>
-        <div>
-          <label>Product Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={updatedProduct.name || ""}
-            onChange={handleChange}
-            
-          />
-        </div>
+          <div>
+            <label>Product Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={updatedProduct.name || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Product description:</label>
+            <input
+              type="text"
+              name="description"
+              value={updatedProduct.description || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Price:</label>
+            <input
+              type="number"
+              name="price"
+              value={updatedProduct.price || ""}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>image:</label>
+            <input
+              type="text"
+              name="imageUrl"
+              value={updatedProduct.imageUrl || ""}
+              onChange={handleImageChange}
+            />
+          </div>
 
-        <div>
-          <label>Price:</label>
-          <input
-            type="number"
-            name="price"
-            value={updatedProduct.price ||""}
-            onChange={handleChange}
-           
-          />
-        </div>
-
-        <button type="submit">Update</button>
-      </form>
+          <button type="submit">Update</button>
+        </form>
       </div>
     );
 

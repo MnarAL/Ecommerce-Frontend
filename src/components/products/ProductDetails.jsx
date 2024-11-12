@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
-import { getAllProductsById } from "../../Services/productService";
+import { getAllProductsById } from "../../Services/ProductService";
+// import { getAllProductsById } from "../../Services/productService";
 
 // import { getAllProductsById } from "../../Services/ProductService";
 
@@ -33,6 +34,7 @@ const ProductDetails = () => {
           <img src={product.imageUrl} alt={product.name} />
           <h3>{product.name}</h3>
           <p>Prics: {product.price} SAR</p>
+          <p>Descriptipn:{product.description}</p>
           <p>Category:{product.categoryName}</p>
         </li>
       </ul>

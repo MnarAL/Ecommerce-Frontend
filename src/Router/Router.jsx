@@ -15,6 +15,7 @@ import AdminProductsList from "../components/admin/AdminProductsList";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminRouter from "./ProtectRouter/AdminRouter";
 import UpdateProduct from "../components/admin/UpdateProduct";
+import Cart from "../components/cart/Cart";
 
 const Router = () => {
   const router = createBrowserRouter([
@@ -41,6 +42,10 @@ const Router = () => {
         {
           path: "/signup",
           element: <SignUp />,
+        },
+        {
+          path: "/cart",
+          element: <Cart />,
         },
         // {
         //   path: "admin-product-manage",
@@ -79,7 +84,7 @@ const Router = () => {
             },
             {
               path: "editproduct/:id",
-              element:<UpdateProduct />,
+              element: <UpdateProduct />,
             },
           ],
         },

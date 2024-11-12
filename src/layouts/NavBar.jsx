@@ -15,7 +15,6 @@ const NavBar = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           E-commerce App
         </Typography>
-
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>
@@ -25,6 +24,10 @@ const NavBar = () => {
         <Button color="inherit" component={Link} to="/signup">
           Sign Up
         </Button>
+        <Button color="inherit" component={Link} to="/cart">
+         Cart
+        </Button>
+
         <Button color="inherit" component={Link} to="/productList">
           Products List
         </Button>

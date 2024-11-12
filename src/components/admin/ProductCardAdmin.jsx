@@ -9,8 +9,8 @@ const ProductCardAdmin = ({ product, onDelete, onUpdate }) => {
   // const { products } = useContext(ProductContext);
   const navigate = useNavigate();
 
-    const handleUpdateClick = (productId) => {
-      navigate(`/admin/dashboard/editproduct/${productId}`);
+    const handleUpdateClick = (id) => {
+      navigate(`/admin/dashboard/editproduct/${id}`);
     };
 
  const { id } = useParams();
@@ -26,6 +26,7 @@ const ProductCardAdmin = ({ product, onDelete, onUpdate }) => {
         <img src={product.imageUrl} alt={product.imageUrl} />
         <h3>{product.name}</h3>
         <p>Prics: {product.price} SAR</p>
+        <p>Descriptipn:{product.description}</p>
 
         <button onClick={handleUpdateClick}>Edit</button>
         <button onClick={handleDeleteClick}>Delete</button>

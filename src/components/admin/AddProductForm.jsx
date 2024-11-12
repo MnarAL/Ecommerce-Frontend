@@ -13,6 +13,8 @@ const AddProductForm = () => {
     price: 0,
     categoryId: "",
     imageUrl: "",
+    description: ""
+
   });
 
   const handleImageChange = (event) => {
@@ -49,6 +51,11 @@ const AddProductForm = () => {
       newErrors.categoryId = "Category is required";
     }
 
+    if (!product.description) {
+      newErrors.description = "Description is required";
+    }
+    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -66,6 +73,7 @@ const AddProductForm = () => {
         price: parseFloat(product.price),
         categoryId: product.categoryId,
         imageUrl: product.imageUrl,
+        description : product.description,
       };
 
       // if (response) {
@@ -99,6 +107,19 @@ const AddProductForm = () => {
           {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
         </div>
         <div>
+          <div>
+            <label>Product description:</label>
+            <input
+              type="text"
+              value={product.description}
+              id="description"
+              name="description"
+              onChange={handleChange}
+              required
+            />
+            {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+          </div>
+          <div></div>
           <label>Price:</label>
           <input
             type="number"
