@@ -17,7 +17,7 @@ const ProductCardAdmin = ({ product, onDelete, onUpdate }) => {
   
 
   const handleDeleteClick = () => {
-    onDelete(id);
+    onDelete(product.id);
   };
 
   return (

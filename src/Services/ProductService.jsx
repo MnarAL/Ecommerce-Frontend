@@ -40,7 +40,7 @@ export const getAllProductsById = async (id) => {
 export const handleAddProduct = async (product) => {
   try {
     const response = await axios.post(
-      "http://localhost:5125/api/v1/products",
+      "https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/products",
       product
     );
     console.log(response);
@@ -64,18 +64,16 @@ export const handleAddProduct = async (product) => {
 
 export const handleDeleteProduct = async (id) => {
   try {
-    const response = await fetch(
+    const response = await axios.delete(
       `https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/products/${id}`,
-      {
-        method: "DELETE",
-      }
+      
     );
-    if (!response.ok) {
-      throw new Error("Failed to delete product");
-    }
+    // if (!response.ok) {
+    //   throw new Error("Failed to delete product");
+    // }
 
     console.log("Product deleted successfully");
-    return true;
+    return response;
   } catch (error) {
     console.error("Error deleting product:", error);
     throw error;
@@ -87,7 +85,7 @@ export const handleDeleteProduct = async (id) => {
 export const handleEditProduct = async (id, updatedProduct) => {
   try {
     const response = await fetch(
-      `http://localhost:5125/api/v1/products/${id}`,
+      `https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/products/${id}`,
       {
         method: "PUT",
         headers: {

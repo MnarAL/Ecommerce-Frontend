@@ -59,6 +59,7 @@ export const ProductProvider = ({ children }) => {
 
   const deleteProduct = async (id) => {
     try {
+       console.log("Deleting product with ID:", id);
       const success = await handleDeleteProduct(id);
       if (success) {
         setProducts(products.filter((product) => product.id !== id));
