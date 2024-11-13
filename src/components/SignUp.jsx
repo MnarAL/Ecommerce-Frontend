@@ -1,121 +1,164 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { register } from "../Services/UserService";
+import React, { useState } from "react"; 
 
-const SignUp = () => {
-  const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
 
-  const validateInput = () => {
-    const newErrors = {};
-    if (!user.name.trim()) newErrors.name = "Name is required";
-    if (!user.email.trim()) newErrors.email = "Email is required";
-    if (user.password.length <= 5)
-      newErrors.password = "Password must be at least 6 characters";
+import { useNavigate } from "react-router-dom"; 
+import { register } from "../Services/UserService"; 
+import {  
+  Container,  
+  Paper,  
+  TextField,  
+  Button,  
+  Typography,  
+  Box, 
+  createTheme, 
+  ThemeProvider 
+} from '@mui/material'; 
+ 
+const theme = createTheme({ 
+  palette: { 
+    primary: { 
+      main: '#2196f3', 
+      light: '#64b5f6', 
+      dark: '#1976d2', 
+    }, 
+    background: { 
+      default: '#f5f5f5', 
+    }, 
+  }, 
+}); 
+ 
+const SignUp = () => { 
+  const navigate = useNavigate(); 
+  const [errors, setErrors] = useState({}); 
+  const [user, setUser] = useState({ 
+    name: "", 
+    email: "", 
+    password: "", 
+  }); 
+ 
+  const validateInput = () => { 
+    const newErrors = {}; 
+    if (!user.name.trim()) newErrors.name = "Name is required"; 
+    if (!user.email.trim()) newErrors.email = "Email is required"; 
+    if (user.password.length <= 5) 
+      newErrors.password = "Password must be at least 6 characters"; 
+ 
+    setErrors(newErrors); 
+    return Object.keys(newErrors).length === 0; 
+  }; 
+ 
+  const handleChange = (e) => { 
+    const { name, value } = e.target; 
+    setUser((prevUser) => ({ 
+      ...prevUser, 
+      [name]: value, 
+    })); 
+  }; 
+ 
+  const handleSubmit = async (event) => { 
+    event.preventDefault(); 
+ 
+    if (validateInput()) { 
+      
+      console.log("form data is valid"); 
+      try { 
+        const response = await register(user); 
+        if (response.ok) { 
+          console.log("User registered successfully"); 
+          navigate("/signin"); 
+        } else { 
+          setErrors({ form: "An error occurred during registration." }); 
+        } 
+      } catch (error) { 
+        console.error("Error registering:", error); 
+        setErrors({ form: "An error occurred. Please try again later." }); 
+      } 
+    } 
+  }; 
+ 
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prevUser) => ({
-      ...prevUser,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (validateInput()) {
-      //  console.log("Data being sent to server:", user);
-      console.log("form data is valid");
-      try {
-        const response = await register(user);
-        if (response.ok) {
-          console.log("User registered successfully");
-          navigate("/signin");
-        } else {
-          setErrors({ form: "An error occurred during registration." });
-        }
-      } catch (error) {
-        console.error("Error registering:", error);
-        setErrors({ form: "An error occurred. Please try again later." });
-      }
-    }
-  };
-
-  //     const newUser = {
-  //       id: nanoid(),
-  //       name: user.name,
-  //       email: user.email,
-  //       password: user.password
-  //     };
-  //     handleAddUser(newUser);
-  //   }
-  // };
-
-  // const handleAddUser = (newUser) => {
-  //   console.log("User added:", newUser);
-
-  // };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <h2>Sign Up</h2>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={user.name}
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <span style={{ color: "red" }}>{errors.name}</span>}
-        </div>
-
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={user.email}
-            onChange={handleChange}
-            required
-          />
-          {errors.email && <span style={{ color: "red" }}>{errors.email}</span>}
-        </div>
-
-        <div>
-          <label htmlFor="password">password:</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={user.password}
-            onChange={handleChange}
-            required
-          />
-          {errors.password && (
-            <span style={{ color: "red" }}>{errors.password}</span>
-          )}
-        </div>
-
-        <div>
-          <button type="submit">Register</button>
-        </div>
-      </form>
-    </div>
-  );
-};
+ 
+  return ( 
+    <ThemeProvider theme={theme}> 
+      <Container component="main" maxWidth="xs"> 
+        <Box 
+          sx={{ 
+            marginTop: 8, 
+            display: 'flex', 
+            flexDirection: 'column', 
+            alignItems: 'center', 
+          }} 
+        > 
+          <Paper elevation={3} sx={{ p: 4, width: '100%', borderRadius: 2 }}> 
+            <Typography component="h1" variant="h4" sx={{ mb: 3, textAlign: 'center', color: 'primary.main' }}> 
+              Sign Up 
+            </Typography> 
+            <form onSubmit={handleSubmit}> 
+              <TextField 
+                margin="normal" 
+                required 
+                fullWidth 
+                id="name" 
+                label="Name" 
+                name="name" 
+                autoComplete="name" 
+                value={user.name} 
+                onChange={handleChange} 
+                error={!!errors.name} 
+                helperText={errors.name} 
+                sx={{ mb: 2 }} 
+              /> 
+              <TextField 
+                margin="normal" 
+                required 
+                fullWidth 
+                id="email" 
+                label="Email Address" 
+                name="email" 
+                autoComplete="email" 
+                value={user.email} 
+                onChange={handleChange} 
+                error={!!errors.email} 
+                helperText={errors.email} 
+                sx={{ mb: 2 }} 
+              /> 
+              <TextField 
+                margin="normal" 
+                required 
+                fullWidth 
+                name="password" 
+                label="Password" 
+                type="password" 
+                id="password" 
+                autoComplete="new-password" 
+                value={user.password} 
+                onChange={handleChange} 
+                error={!!errors.password} 
+                helperText={errors.password} 
+                sx={{ mb: 3 }} 
+              /> 
+              <Button 
+                type="submit" 
+                fullWidth 
+                variant="contained" 
+                sx={{ 
+                  mt: 2, 
+                  mb: 2, 
+                  py: 1.5, 
+                  bgcolor: 'primary.main', 
+                  '&:hover': { 
+                    bgcolor: 'primary.dark', 
+                  }, 
+                }} 
+              > 
+                Register 
+              </Button> 
+            </form> 
+          </Paper> 
+        </Box> 
+      </Container> 
+    </ThemeProvider> 
+  ); 
+}; 
+ 
 export default SignUp;

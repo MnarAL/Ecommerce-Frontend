@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext } from "react";
 import {
   Button,
   Card,
@@ -7,10 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { CartContext } from '../../contexts/CartContext';
-import { ProductContext } from '../../contexts/ProductContexts';
+import { CartContext } from "../../contexts/CartContext";
+import { ProductContext } from "../../contexts/ProductContexts";
 
-const ProductCard = ({product}) => {
+const ProductCard = ({ product }) => {
   const { isLoading, error } = useContext(ProductContext);
 
   if (isLoading) {
@@ -22,79 +22,125 @@ const ProductCard = ({product}) => {
   }
 
   const { cart, addToCart } = useContext(CartContext);
-
-  // Check if the product is already in the cart
   const isInCart = cart.some((item) => item.id === product.id);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
-   const handleDetailsClick = () => {
-     navigate(`/productdetails/${product.id}`);
-   };
-   const handleAddToCart = () => {
+  const handleDetailsClick = () => {
+    navigate(`/productdetails/${product.id}`);
+  };
+  const handleAddToCart = () => {
     addToCart(product);
-   };
+  };
+
   return (
-    <div>
-      <Card sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        {/* Product Image */}
-        <CardMedia
-          component="img"
-          height="180"
-          image={product.image || "https://via.placeholder.com/150"}
-          alt={product.name}
-          sx={{ objectFit: "cover" }}
-        />
-
-        <CardContent
-          sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}
+    <Card
+      sx={{
+        maxWidth: 345,
+        m: 2,
+        borderRadius: 2,
+        boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
+        overflow: "hidden",
+        transition: "transform 0.3s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0 8px 40px -12px rgba(0,0,0,0.3)",
+        },
+      }}
+    >
+      <CardMedia
+        component="img"
+        height="280"
+        image={product.imageUrl || "https://via.placeholder.com/150"}
+        alt={product.name}
+        sx={{
+          objectFit: "cover",
+          transition: "transform 0.3s ease-in-out",
+          backgroundColor: "#f5f5f5",
+          p: 2,
+          zIndex: -1,
+        }}
+      />
+      <CardContent
+        sx={{
+          backgroundColor: "background.paper",
+          borderTop: "1px solid",
+          borderColor: "divider",
+          textAlign: "center",
+          p: 2,
+        }}
+      >
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{
+            fontWeight: 600,
+            color: "primary.dark",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            minHeight: "3.6em",
+          }}
         >
-          {/* Product Name */}
-          <Typography
-            variant="h6"
-            component="div"
-            gutterBottom
+          {product.name}
+        </Typography>
+
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: "bold",
+            color: "success.dark",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 0.5,
+          }}
+        >
+          <span style={{ fontSize: "0.8em" }}>SAR</span>
+          {product.price}
+        </Typography>
+
+        <div style={{ display: "flex", gap: "8px", mt: 2 }}>
+          <Button
+            variant="outlined"
             color="primary"
-            fontWeight="bold"
+            fullWidth
+            onClick={handleDetailsClick}
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              "&:hover": {
+                backgroundColor: "primary.light",
+                color: "white",
+                borderColor: "primary.light",
+              },
+            }}
           >
-            {product.name}
-          </Typography>
-
-      
-         
-
-          {/* Product Price */}
-          <Typography
-            variant="subtitle1"
-            color="text.primary"
-            fontWeight="medium"
-          >
-            Price: ${product.price.toFixed(2)}
-          </Typography>
-
-          
-
-          {/* Add To Cart Button
+            More Details
+          </Button>
           <Button
             variant="contained"
-            color="secondary"
+            color="primary"
             fullWidth
-            sx={{ marginTop: "16px" }}
-            onClick={() => addToCart(product)}
-           // Disable button if product is in cart
+            onClick={handleAddToCart}
+            disabled={isInCart}
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              background: isInCart ? "grey.300" : "primary.main",
+              "&:hover": {
+                background: isInCart ? "grey.400" : "primary.dark",
+                boxShadow: "0 8px 16px -8px rgba(0,0,0,0.4)",
+              },
+            }}
           >
-            {isInCart ? "Already in Cart" : "Add To Cart"}
-          </Button> */}
-        </CardContent>
-      </Card>
-      <li key={product.id}>
-        <img src={product.imageUrl} alt="pro" />
-        <h3>{product.name}</h3>
-        <p>Prics: {product.price} SAR</p>
-        <button onClick={handleDetailsClick}>more deatils</button>
-        <button onClick={handleAddToCart}>Add to catr</button>
-      </li>
-    </div>
+            {isInCart ? "In Cart" : "Add to Cart"}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
-}
+};
 
-export default ProductCard
+export default ProductCard;

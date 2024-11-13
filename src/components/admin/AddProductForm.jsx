@@ -1,20 +1,77 @@
 import React, { useContext, useState } from "react";
+
 import { useNavigate } from "react-router-dom";
-import { handleAddProduct } from "../../Services/ProductService";
 import { ProductContext } from "../../contexts/ProductContexts";
-// import { handleAddProduct } from "../Services/ProductService";
+import {
+  createTheme,
+  ThemeProvider,
+  Container,
+  Paper,
+  Typography,
+  Box,
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
+} from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+      light: "#42a5f5",
+      dark: "#1565c0",
+      contrastText: "#fff",
+    },
+    secondary: {
+      main: "#9c27b0",
+      light: "#ba68c8",
+      dark: "#7b1fa2",
+    },
+    background: {
+      default: "#f8f9fa",
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#2c3e50",
+      secondary: "#546e7a",
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginBottom: "1rem",
+          width: "100%",
+        },
+      },
+    },
+  },
+});
 
 const AddProductForm = () => {
   const [errors, setErrors] = useState({});
-  const { addProduct , categories } = useContext(ProductContext);
+  const { addProduct, categories } = useContext(ProductContext);
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: "",
     price: 0,
     categoryId: "",
     imageUrl: "",
-    description: ""
-
+    description: "",
   });
 
   const handleImageChange = (event) => {
@@ -33,7 +90,6 @@ const AddProductForm = () => {
     }));
   };
 
-
   const validateInputs = () => {
     const newErrors = {};
 
@@ -43,7 +99,7 @@ const AddProductForm = () => {
 
     if (!product.price) {
       newErrors.price = "Price is required";
-    } else if (parseFloat(product.Price) <= 0) {
+    } else if (parseFloat(product.price) <= 0) {
       newErrors.price = "Price must be positive";
     }
 
@@ -54,7 +110,6 @@ const AddProductForm = () => {
     if (!product.description) {
       newErrors.description = "Description is required";
     }
-    
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -73,16 +128,9 @@ const AddProductForm = () => {
         price: parseFloat(product.price),
         categoryId: product.categoryId,
         imageUrl: product.imageUrl,
-        description : product.description,
+        description: product.description,
       };
 
-      // if (response) {
-      //   setProduct({
-      //     vame: "",
-      //     price: "",
-      //     categoryId: "",
-      //     imageUrl: "",
-      //   });
       const response = await addProduct(productData);
       navigate(`/admin/dashboard/admin-productslist`);
     } catch (error) {
@@ -91,84 +139,139 @@ const AddProductForm = () => {
   };
 
   return (
-    <div>
-      <h2>New Product:</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Product name:</label>
-          <input
-            type="text"
-            value={product.name}
-            id="name"
-            name="name"
-            onChange={handleChange}
-            required
-          />
-          {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
-        </div>
-        <div>
-          <div>
-            <label>Product description:</label>
-            <input
-              type="text"
-              value={product.description}
-              id="description"
-              name="description"
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="xs">
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 3, md: 5 },
+            mt: 4,
+            borderRadius: 3,
+            background: "linear-gradient(to right bottom, #ffffff, #fafafa)",
+          }}
+        >
+          <Typography
+            variant="h4"
+            component="h2"
+            gutterBottom
+            color="primary"
+            sx={{
+              fontWeight: 600,
+              mb: 4,
+              borderBottom: "2px solid #1976d2",
+              pb: 1,
+              display: "inline-block",
+            }}
+          >
+            New Product
+          </Typography>
+
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <TextField
+              label="Product Name"
+              variant="outlined"
+              name="name"
+              value={product.name}
               onChange={handleChange}
+              error={Boolean(errors.name)}
+              helperText={errors.name}
               required
             />
-            {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
-          </div>
-          <div></div>
-          <label>Price:</label>
-          <input
-            type="number"
-            value={product.price}
-            id="price"
-            name="price"
-            onChange={handleChange}
-            required
-          />
-          {errors.price && <p style={{ color: "red" }}>{errors.price}</p>}
-        </div>
-        <div>
-          <label>Category:</label>
-          <select
-            id="category"
-            name="categoryId"
-            value={product.categoryId}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Category</option>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <option key={category.categoryId} value={category.categoryId}>
-                  {category.categoryName}
-                </option>
-              ))
-            ) : (
-              <option disabled>No categories available</option>
-            )}
-          </select>
-          {errors.categoryId && (
-            <p style={{ color: "red" }}>{errors.categoryId}</p>
-          )}
-        </div>
 
-        <label htmlFor="imageUrl">Image:</label>
-        <input
-          type="text"
-          placeholder="Image URL"
-          id="image"
-          name="imageUrl"
-          value={product.imageUrl}
-          onChange={handleImageChange}
-          required
-        />
-        <button type="submit">Add</button>
-      </form>
-    </div>
+            <TextField
+              label="Product Description"
+              variant="outlined"
+              name="description"
+              value={product.description}
+              onChange={handleChange}
+              error={Boolean(errors.description)}
+              helperText={errors.description}
+              required
+            />
+
+            <TextField
+              label="Price"
+              variant="outlined"
+              type="number"
+              name="price"
+              value={product.price}
+              onChange={handleChange}
+              error={Boolean(errors.price)}
+              helperText={errors.price}
+              required
+            />
+
+            <FormControl
+              fullWidth
+              error={Boolean(errors.categoryId)}
+              sx={{ mt: 2 }}
+            >
+              <InputLabel>Category</InputLabel>
+              <Select
+                name="categoryId"
+                value={product.categoryId}
+                onChange={handleChange}
+                label="Category"
+                required
+              >
+                <MenuItem value="">Select Category</MenuItem>
+                {categories.length > 0 ? (
+                  categories.map((category) => (
+                    <MenuItem
+                      key={category.categoryId}
+                      value={category.categoryId}
+                    >
+                      {category.categoryName}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No categories available</MenuItem>
+                )}
+              </Select>
+              {errors.categoryId && (
+                <FormHelperText>{errors.categoryId}</FormHelperText>
+              )}
+            </FormControl>
+
+            <TextField
+              label="Image URL"
+              variant="outlined"
+              name="imageUrl"
+              value={product.imageUrl}
+              onChange={handleImageChange}
+              error={Boolean(errors.imageUrl)}
+              helperText={errors.imageUrl}
+              required
+            />
+
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+              sx={{
+                mt: 4,
+                px: 6,
+                py: 1.8,
+                borderRadius: 2,
+                textTransform: "none",
+                fontSize: "1.1rem",
+                fontWeight: 500,
+                boxShadow: "0 4px 12px rgba(25, 118, 210, 0.3)",
+                transition: "all 0.3s ease",
+                "&:hover": {
+                  backgroundColor: "primary.dark",
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 6px 15px rgba(25, 118, 210, 0.4)",
+                },
+              }}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </ThemeProvider>
   );
 };
 

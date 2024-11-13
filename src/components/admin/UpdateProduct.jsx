@@ -1,13 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import { ProductContext } from "../../contexts/ProductContexts";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { handleEditProduct } from "../../Services/ProductService";
-
+import {
+  TextField,
+  Button,
+  Grid,
+  Paper,
+  Typography,
+  Container,
+} from "@mui/material";
 
 const UpdateProduct = () => {
-  const { products, fetchProducts } =
-    useContext(ProductContext);
+  const { products, fetchProducts } = useContext(ProductContext);
   const [updatedProduct, setUpdatedProduct] = useState({
     name: "",
     price: 0,
@@ -15,12 +20,14 @@ const UpdateProduct = () => {
     description: "",
   });
   const { id } = useParams();
-
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const FindProduct = products.find((product) => product.id === id);
-    if (FindProduct) {
-      setUpdatedProduct(FindProduct);
+    const findProduct = products.find((product) => product.id === id);
+    if (findProduct) {
+      setUpdatedProduct(findProduct);
+    } else {
+      console.log("Product not found with ID:", id);
     }
   }, [id, products]);
 
@@ -32,77 +39,89 @@ const UpdateProduct = () => {
     }));
   };
 
-  const handleImageChange = (event) => {
-    const imageUrl = event.target.value;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      imageUrl,
-    }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Updated Product Data:", updatedProduct);
     try {
-      await handleEditProduct(id , updatedProduct);
+      await handleEditProduct(id, updatedProduct);
       await fetchProducts();
-      // console.log("Product updated successfully");
-    //  navigate(`/admin/dashboard/admin-productslist`);
+      navigate(`/admin/dashboard/admin-productslist`);
     } catch (error) {
       console.error("Error updating product:", error);
-    } }
+    }
+  };
 
-    // const handleEditClick = (productId) =>
-    //    {
-    //      navigate(`/admin/dashboard/admin-productslist`);
-    //    }
-
-    return (
-      <div>
-        imageUrl: "", description: "",
-        <h2>Update Product</h2>
+  return (
+    <Container maxWidth="sm">
+      <Paper elevation={3} sx={{ p: 3, mt: 4 }}>
+        <Typography variant="h4" component="h2" color="primary" gutterBottom>
+          Update Product
+        </Typography>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Product Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={updatedProduct.name || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Product description:</label>
-            <input
-              type="text"
-              name="description"
-              value={updatedProduct.description || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>Price:</label>
-            <input
-              type="number"
-              name="price"
-              value={updatedProduct.price || ""}
-              onChange={handleChange}
-            />
-          </div>
-          <div>
-            <label>image:</label>
-            <input
-              type="text"
-              name="imageUrl"
-              value={updatedProduct.imageUrl || ""}
-              onChange={handleImageChange}
-            />
-          </div>
-
-          <button type="submit">Update</button>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Product Name"
+                name="name"
+                value={updatedProduct.name || ""}
+                onChange={handleChange}
+                variant="outlined"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Description"
+                name="description"
+                value={updatedProduct.description || ""}
+                onChange={handleChange}
+                variant="outlined"
+                multiline
+                rows={4}
+                required
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Price"
+                name="price"
+                value={updatedProduct.price || ""}
+                onChange={handleChange}
+                variant="outlined"
+                type="number"
+                required
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <TextField
+                fullWidth
+                label="Image URL"
+                name="imageUrl"
+                value={updatedProduct.imageUrl || ""}
+                onChange={handleChange}
+                variant="outlined"
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                fullWidth
+                sx={{ mt: 2 }}
+              >
+                Update Product
+              </Button>
+            </Grid>
+          </Grid>
         </form>
-      </div>
-    );
-
+      </Paper>
+    </Container>
+  );
 };
 
 export default UpdateProduct;

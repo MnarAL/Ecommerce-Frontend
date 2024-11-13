@@ -1,47 +1,50 @@
-import React, { useContext } from 'react'
-import { ProductContext } from '../contexts/ProductContexts';
+import React, { useContext } from "react";
+import { ProductContext } from "../contexts/ProductContexts";
+import { FormControl, InputLabel, Select, MenuItem, Box } from "@mui/material";
 
 const Sort = () => {
-  // const [products] = useContext(ProductContext) ;
-   const {sortCriteria, setSortCriteria, sortOrder, setSortOrder} =
-     useContext(ProductContext);
-   
+  const { sortCriteria, setSortCriteria, sortOrder, setSortOrder } =
+    useContext(ProductContext);
 
-   const handleSortOrderChange = (event) => {
-     setSortOrder(event.target.value);
-   };
+  const handleSortOrderChange = (event) => {
+    setSortOrder(event.target.value);
+  };
 
+  const handleSortChange = (event) => {
+    setSortCriteria(event.target.value);
+  };
 
-   const handleSortChange = (event) => {
-     setSortCriteria(event.target.value);
-   };
   return (
-    <div className="sort">
-      <label htmlFor="sort">Sort By: </label>
-      <select
-        id="sort"
-        value={sortCriteria}
-        onChange={handleSortChange}
-        className="sort-select"
-        placeholder="Select sorting criteria"
-      >
-        <option value="">Sort By</option>
-        <option value="name">Name</option>
-        <option value="price">Price</option>
-      </select>
+    <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
+      <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+        <InputLabel htmlFor="sort">Sort By</InputLabel>
+        <Select
+          id="sort"
+          value={sortCriteria}
+          onChange={handleSortChange}
+          label="Sort By"
+          size="small"
+        >
+          <MenuItem value="name">Name</MenuItem>
+          <MenuItem value="price">Price</MenuItem>
+        </Select>
+      </FormControl>
 
-      <label htmlFor="rating">Rating: </label>
-      <select
-        id="order"
-        value={sortOrder}
-        onChange={handleSortOrderChange}
-        className="order-select"
-      >
-        <option value="asc">Low to High</option>
-        <option value="desc">High to Low</option>
-      </select>
-    </div>
+      <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+        <InputLabel htmlFor="order">Order</InputLabel>
+        <Select
+          id="order"
+          value={sortOrder}
+          onChange={handleSortOrderChange}
+          label="Order"
+          size="small"
+        >
+          <MenuItem value="asc">Ascending</MenuItem>
+          <MenuItem value="desc">Descending</MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
   );
-}
+};
 
-export default Sort
+export default Sort;

@@ -1,7 +1,6 @@
-
 import React, { useContext } from "react";
 
-import Pagination from "@mui/material/Pagination"; 
+import Pagination from "@mui/material/Pagination";
 import { ProductContext } from "../contexts/ProductContexts";
 
 const PaginationComp = () => {
@@ -23,7 +22,7 @@ const PaginationComp = () => {
         sx={{ marginTop: 3 }}
       />
       <p style={{ marginTop: "10px", textAlign: "center" }}>
-        Page {pageNumber} of {totalPages}
+       
       </p>
     </div>
   );

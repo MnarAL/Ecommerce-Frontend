@@ -1,11 +1,12 @@
 import React, { useEffect, useState, createContext } from "react";
+
 import PropTypes from "prop-types";
 
-// إنشاء الـ Context
+
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // تحميل سلة الشراء من localStorage إذا كانت متاحة، وإلا يتركها كأريه فارغة
+
   const loadCartFromLocalStorage = () => {
     const cartData = localStorage.getItem("cart");
     return cartData ? JSON.parse(cartData) : [];
@@ -13,7 +14,7 @@ export const CartProvider = ({ children }) => {
 
   const [cart, setCart] = useState(loadCartFromLocalStorage);
 
-  // دالة لحفظ السلة في localStorage
+ 
   const saveCartToLocalStorage = (cartItems) => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   };
@@ -26,15 +27,15 @@ export const CartProvider = ({ children }) => {
       let updatedCart;
 
       if (existingProductIndex >= 0) {
-        // إذا المنتج موجود، يزيد الكمية
+ 
         updatedCart = [...prevCart];
         updatedCart[existingProductIndex].quantity += 1;
       } else {
-        // إضافة منتج جديد للسلة
+     
         updatedCart = [...prevCart, { ...product, quantity: 1 }];
       }
 
-      saveCartToLocalStorage(updatedCart); // حفظ السلة المحدثة في localStorage
+      saveCartToLocalStorage(updatedCart); 
       return updatedCart;
     });
   };
@@ -44,31 +45,31 @@ export const CartProvider = ({ children }) => {
       const updatedCart = prevCart.filter(
         (item) => item.id !== id
       );
-      saveCartToLocalStorage(updatedCart); // حفظ السلة المحدثة في localStorage
+      saveCartToLocalStorage(updatedCart); 
       return updatedCart;
     });
   };
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem("cart"); // إزالة السلة من localStorage
+    localStorage.removeItem("cart"); 
   };
 
   const updateQuantity = (id, quantity) => {
     setCart((prevCart) => {
       const updatedCart = prevCart.map((item) => {
         if (item.id === id) {
-          return { ...item, quantity: Math.max(1, quantity) }; // التأكد أن الكمية على الأقل تساوي 1
+          return { ...item, quantity: Math.max(1, quantity) }; 
         }
         return item;
       });
 
-      saveCartToLocalStorage(updatedCart); // حفظ السلة المحدثة في localStorage
+      saveCartToLocalStorage(updatedCart); 
       return updatedCart;
     });
   };
 
-  // التزامن مع localStorage عند تغير السلة
+
   useEffect(() => {
     saveCartToLocalStorage(cart);
   }, [cart]);

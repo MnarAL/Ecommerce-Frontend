@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+
 import {
   Button,
   Card,
@@ -9,6 +10,7 @@ import {
   TextField,
   IconButton,
   Divider,
+  Container,
 } from "@mui/material";
 import { Add, Remove, Delete } from "@mui/icons-material";
 import Grid from "@mui/material/Grid2";
@@ -18,14 +20,11 @@ import { CartContext } from "../../contexts/CartContext";
 const Cart = () => {
   const { cart, removeFromCart, clearCart, updateQuantity } = useContext(CartContext);
 
-  // const userContext = useUser();
-  // console.log(userContext);
 
   // Track address state
   const [address, setAddress] = useState("");
   const [addressEditing, setAddressEditing] = useState(false);
 
-  // Calculate total price
   const totalPrice = cart.reduce(
     (total, item) => total + item.price * item.quantity,
     0
@@ -54,6 +53,8 @@ const Cart = () => {
   };
 
   return (
+
+    <Container maxWidth="100%"> 
     <Box padding={3}>
       <Typography variant="h4" gutterBottom>
         Your Cart
@@ -89,7 +90,7 @@ const Cart = () => {
                       objectFit: "cover",
                       borderRadius: 1,
                     }}
-                    image={item.imageUrl} // assuming `item.image` contains the image URL
+                    image={item.imageUrl} 
                     alt={item.name}
                   />
                   <CardContent
@@ -213,6 +214,7 @@ const Cart = () => {
         </Grid>
       </Grid>
     </Box>
+    </Container> 
   );
 };
 
