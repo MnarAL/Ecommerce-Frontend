@@ -6,7 +6,7 @@ import { ProductContext } from "../../contexts/ProductContexts";
 
 const AddProductForm = () => {
   const [errors, setErrors] = useState({});
-  const { addProduct } = useContext(ProductContext);
+  const { addProduct , categories } = useContext(ProductContext);
   const navigate = useNavigate();
   const [product, setProduct] = useState({
     name: "",
@@ -133,18 +133,29 @@ const AddProductForm = () => {
         </div>
         <div>
           <label>Category:</label>
-          <input
-            type="text"
+          <select
             id="category"
             name="categoryId"
             value={product.categoryId}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Select Category</option>
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <option key={category.categoryId} value={category.categoryId}>
+                  {category.categoryName}
+                </option>
+              ))
+            ) : (
+              <option disabled>No categories available</option>
+            )}
+          </select>
           {errors.categoryId && (
             <p style={{ color: "red" }}>{errors.categoryId}</p>
           )}
         </div>
+
         <label htmlFor="imageUrl">Image:</label>
         <input
           type="text"

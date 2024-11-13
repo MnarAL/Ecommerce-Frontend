@@ -59,12 +59,8 @@ const ProductCard = ({product}) => {
             {product.name}
           </Typography>
 
-          {/* Product Description */}
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            {product.description?.length > 60
-              ? `${product.description.slice(0, 60)}...`
-              : product.description}
-          </Typography>
+      
+         
 
           {/* Product Price */}
           <Typography
@@ -75,10 +71,7 @@ const ProductCard = ({product}) => {
             Price: ${product.price.toFixed(2)}
           </Typography>
 
-          {/* Product Quantity */}
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
-            Quantity: {product.quantity}
-          </Typography>
+          
 
           {/* Add To Cart Button
           <Button

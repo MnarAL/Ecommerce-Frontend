@@ -107,3 +107,17 @@ export const handleEditProduct = async (id, updatedProduct) => {
     throw error;
   }
 };
+
+
+export const handleCategories = async () => {
+  try {
+    const response = await fetch(
+      `https://sda-3-onsite-backend-teamwork-7m2v.onrender.com/api/v1/category`
+    );
+    const info = await response.json();
+    return info;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};

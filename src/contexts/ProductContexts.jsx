@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import { getAllProducts } from "../Services/ProductService";
+import { getAllProducts, handleCategories } from "../Services/ProductService";
 import {
   handleAddProduct,
   handleDeleteProduct,
@@ -19,6 +19,7 @@ export const ProductProvider = ({ children }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState(1); //create state + d v
   const [pageSize, setPageSize] = useState(2);
+   const [categories, setCategories] = useState([]);
   // const [product , setProduct ] = useState({name : "" , price: 0 ,})
 
   const fetchProducts = async () => {
@@ -57,6 +58,19 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchCategoriesData = async () => {
+      try {
+        const fetchCategoriesData = await handleCategories();
+        setCategories(fetchCategoriesData.categories);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategoriesData();
+  }, []);
+
   const deleteProduct = async (id) => {
     try {
        console.log("Deleting product with ID:", id);
@@ -90,6 +104,8 @@ export const ProductProvider = ({ children }) => {
         addProduct,
         deleteProduct,
         fetchProducts,
+        categories,
+        setCategories,
       }}
     >
       {children}
